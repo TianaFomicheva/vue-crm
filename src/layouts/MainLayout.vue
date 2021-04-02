@@ -1,5 +1,7 @@
 <template>
   <div class="app-main-layout">
+    <Navbar />
+    <Sidebar />
     <nav class="navbar orange lighten-1">
       <div class="nav-wrapper">
         <div class="navbar-left">
@@ -138,3 +140,14 @@
     </div>
   </div>
 </template>
+<script>
+import Navbar from "@/components/app/Navbar";
+import Sidebar from "@/components/app/Sidebar";
+export default {
+  name: "main-layout",
+  components: {
+    Navbar,
+    Sidebar,
+  },
+};
+</script>

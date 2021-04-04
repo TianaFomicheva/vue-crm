@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <div id="nav"><router-link to="/">Home</router-link> |</div>
-    <router-view />
+    <component :is="layout">
+      <router-view />
+    </component>
   </div>
 </template>
 
@@ -10,9 +11,17 @@
 @import "assets/index.css";
 </style>
 <script>
+import EmptyLayout from "@/layouts/EmptyLayout";
+import MainLayout from "@/layouts/MainLayout";
 export default {
-  layout() {
-    console.log(this.$route.meta);
+  computed: {
+    layout() {
+      return (this.$route.meta.layout || "empty") + "-layout";
+    },
+  },
+  components: {
+    EmptyLayout,
+    MainLayout,
   },
 };
 </script>

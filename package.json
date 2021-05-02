@@ -10,6 +10,7 @@
   "dependencies": {
     "@babel/parser": "^7.13.13",
     "core-js": "^3.10.0",
+    "firebase": "^8.4.2",
     "materialize-css": "^1.0.0-rc.2",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",

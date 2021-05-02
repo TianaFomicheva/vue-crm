@@ -16,8 +16,8 @@
           />
           <label for="email">Email</label>
           <small
-            v-if="$v.email.$dirty && !$v.email.required"
             class="helper-text invalid"
+            v-if="$v.email.$dirty && !$v.email.required"
             >поле email не должно быть пустым</small
           >
 
@@ -52,20 +52,17 @@
           >
         </div>
         <div class="input-field">
-          <input
-            id="name"
-            type="text"
-            v-model.trim="name"
-            :class="{
-              invalid: $v.name.$dirty && !$v.name.required,
-            }"
-          />
+          <input id="name" type="text" v-model.trim="name" />
           <label for="name">Имя</label>
-          <small class="helper-text invalid">Введите имя</small>
+          <small
+            v-if="$v.name.$dirty && !$v.name.required"
+            class="helper-text invalid"
+            >Введите имя</small
+          >
         </div>
         <p>
           <label>
-            <input type="checkbox" />
+            <input type="checkbox" v-model="agree" />
             <span>С правилами согласен</span>
           </label>
         </p>
@@ -106,8 +103,13 @@ export default {
     agree: { checked: (v) => v },
   },
   methods: {
-    submitHandler() {
-      if (this.$v.$invalid) {
+    async submitHandler() {
+      if (
+        this.$v.password.$invalid ||
+        this.$v.name.$invalid ||
+        this.$v.email.$invalid ||
+        this.$v.agree.$invalid
+      ) {
         this.$v.$touch();
         return;
       }
@@ -116,8 +118,13 @@ export default {
         password: this.password,
         name: this.name,
       };
-      console.log(formData);
-      this.router.push("/");
+      try {
+        console.log(formData);
+        await this.$store.dispatch("register", formData);
+        this.router.push("/");
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

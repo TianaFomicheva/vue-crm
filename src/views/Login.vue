@@ -10,14 +10,13 @@
             v-model.trim="email"
             :class="{
               invalid:
-                ($v.email.$dirty && !$v.email.required) ||
-                ($v.email.$dirty && !$v.email.email),
+                !$v.email.required || ($v.email.$dirty && !$v.email.email),
             }"
           />
           <label for="email">Email</label>
           <small
-            v-if="$v.email.$dirty && !$v.email.required"
             class="helper-text invalid"
+            v-if="$v.email.$dirty && !$v.email.required"
             >поле email не должно быть пустым</small
           >
 
@@ -33,9 +32,7 @@
             type="password"
             v-model.trim="password"
             :class="{
-              invalid:
-                ($v.password.$dirty && !$v.password.required) ||
-                ($v.password.$dirty && !$v.password.minLength),
+              invalid: true,
             }"
           />
           <label for="password">Пароль</label>
@@ -91,12 +88,17 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
-      this.$router.push("/");
+      try {
+        await this.$store.dispatch("login", FormData);
+        this.$router.push("/");
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
